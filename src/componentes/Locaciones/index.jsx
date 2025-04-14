@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import './style.css'
 
-function Detalle() {
+function Locaciones() {
 
   return (
     <>
-      <h1>Detalle</h1>
+      <h1>Locaciones</h1>
     </>
   )
 }
 
-export default Detalle
+export default Locaciones
