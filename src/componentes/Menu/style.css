@@ -1,13 +1,55 @@
-.c-menu{
-    background-color: silver;
-    flex-wrap: wrap;
+.c-menu {
     position: fixed;
     bottom: 0;
     left: 0;
+    right: 0;
+    background: #1a1a1a;
+    padding: 1rem;
+    z-index: 1000;
     display: flex;
+    gap: 1rem;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    width: 100%;
-    padding: 15px;
-}
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Añade margen al final del contenido */
+  body {
+    margin-bottom: 70px; /* Ajusta según la altura de tu menú */
+  }
+  
+  .c-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+  }
+  
+  .c-menu a:hover {
+    background: #00b5cc;
+    color: #fff;
+  }
+  
+  /* Asegura que el contenido no quede oculto */
+  .main-content {
+    padding: 20px;
+    margin-bottom: 80px; /* Espacio extra para móviles */
+  }
+  
+  @media (max-width: 768px) {
+    .c-menu {
+      flex-wrap: wrap;
+      padding: 0.8rem;
+      gap: 0.5rem;
+    }
+    
+    .c-menu a {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+    
+    body {
+      margin-bottom: 90px; /* Más espacio en móviles */
+    }
+  }

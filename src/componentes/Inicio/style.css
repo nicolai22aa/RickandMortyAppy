@@ -1,0 +1,18 @@
+.inicio-container {
+    min-height: 80vh;
+    padding: 2rem;
+    background-color: #1e1e1e;
+  }
+  
+  .personaje-card {
+    text-align: center;
+  }
+  
+  .personaje-card img {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .personaje-card img:hover {
+    transform: scale(1.1);
+  }
+  

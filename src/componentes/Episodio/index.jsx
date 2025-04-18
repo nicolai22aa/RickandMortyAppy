@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 
+// Componente para mostrar los detalles del episodio
 function EpisodioCard({ episodio }) {
   return (
     <div className="text-center p-5">
@@ -21,6 +22,7 @@ EpisodioCard.propTypes = {
   }).isRequired
 };
 
+// Componente para la navegación entre páginas
 function NavegacionPagina({ pagina, setPagina }) {
   return (
     <header className='d-flex justify-content-between align-items-center p-3'>
@@ -49,17 +51,26 @@ NavegacionPagina.propTypes = {
   setPagina: PropTypes.func.isRequired
 };
 
+// Componente principal que maneja la lista de episodios
 function ListaEpisodios() {
-  const [episodios, setEpisodios] = useState([]);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
-  const [pagina, setPagina] = useState(1);
+  const [episodios, setEpisodios] = useState([]); // Almacena los episodios obtenidos
+  const [cargando, setCargando] = useState(true); // Estado de carga
+  const [error, setError] = useState(null); // Almacena errores
+  const [pagina, setPagina] = useState(1); // Página actual de los episodios
+  const [nombreFiltro, setNombreFiltro] = useState(''); // Filtro de nombre de episodio
 
   useEffect(() => {
     async function fetchData() {
       try {
         setCargando(true);
-        const response = await fetch(`https://rickandmortyapi.com/api/episode?page=${pagina}`);
+        
+        // Se actualiza la URL con el filtro de nombre
+        const params = new URLSearchParams({
+          page: pagina,
+          ...(nombreFiltro && { name: nombreFiltro }) // Si hay un filtro de nombre, se agrega a la consulta
+        });
+
+        const response = await fetch(`https://rickandmortyapi.com/api/episode?${params}`);
         if (!response.ok) throw new Error('Error en la respuesta de la API');
         const data = await response.json();
         setEpisodios(data.results);
@@ -73,12 +84,25 @@ function ListaEpisodios() {
     }
 
     fetchData();
-  }, [pagina]);
+  }, [pagina, nombreFiltro]); // Ejecutar cada vez que cambian la página o el filtro
 
   return (
-    <div className='container bg-danger'>
+    <div className='container'>
+      {/* Buscador de episodios */}
+      <div className="mb-4 d-flex justify-content-center">
+        <input
+          type="text"
+          className="form-control w-50" // Ajusta el tamaño del buscador
+          placeholder="Buscar"
+          value={nombreFiltro}
+          onChange={(e) => setNombreFiltro(e.target.value)}
+        />
+      </div>
+
+      {/* Componente de navegación de página */}
       <NavegacionPagina pagina={pagina} setPagina={setPagina} />
 
+      {/* Muestra el estado de carga, error o la lista de episodios */}
       {cargando ? (
         <div className="text-center p-5">
           <div className="spinner-border text-primary" role="status">
@@ -97,11 +121,13 @@ function ListaEpisodios() {
         </div>
       )}
 
+      {/* Componente de navegación de página */}
       <NavegacionPagina pagina={pagina} setPagina={setPagina} />
     </div>
   );
 }
 
+// Componente principal que incluye los episodios
 export default function Episodio() {
   return (
     <div className='bg-dark text-white'>

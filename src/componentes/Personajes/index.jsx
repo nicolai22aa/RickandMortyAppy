@@ -1,121 +1,65 @@
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import './style.css';
 
-function Character({ character }) {
-  return (
-    <div className="text-center p-5">
-      <h3>{character.name}</h3>
-      <img 
-        className="img-fluid rounded-pill" 
-        src={character.image} 
-        alt={character.name}
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = 'https://via.placeholder.com/150';
-        }}
-      />
-      <p>{character.origin.name}</p>
-    </div>
-  );
-}
+function Personajes() {
+  const [personajes, setPersonajes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1); // Para la paginación
 
-Character.propTypes = {
-  character: PropTypes.shape({
-    name: PropTypes.string,
-    image: PropTypes.string,
-    origin: PropTypes.shape({
-      name: PropTypes.string
-    }),
-    id: PropTypes.number
-  }).isRequired
-};
+  useEffect(() => {
+    const fetchPersonajes = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`https://rickandmortyapi.com/api/character?page=${page}`);
+        const data = await response.json();
+        setPersonajes(data.results);
+      } catch (error) {
+        console.error('Error al cargar personajes:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-function Paginacion({ page, setPage }) {
+    fetchPersonajes();
+  }, [page]); // Refresca los personajes cada vez que cambie la página
+
+  if (loading) return <div className="text-center text-white">Cargando personajes...</div>;
+
   return (
-    <header className='d-flex justify-content-between align-items-center p-3'>
-      <p>Página: {page}</p>
+    <div className="text-center text-white">
+      <h1>Personajes</h1>
+      <div className="d-flex flex-wrap justify-content-center">
+        {personajes.map((personaje) => (
+          <div key={personaje.id} className="personaje-card m-3">
+            {/* Enlazamos la imagen con el detalle del personaje */}
+            <Link to={`/detalles/${personaje.id}`}>
+              <img
+                src={personaje.image}
+                alt={personaje.name}
+                className="img-fluid rounded-circle shadow-lg"
+                style={{ maxWidth: '150px' }}
+              />
+              <h5>{personaje.name}</h5>
+            </Link>
+          </div>
+        ))}
+      </div>
+      {/* Paginación */}
       <div>
         <button
-          className='btn btn-primary btn-sm mx-1'
-          onClick={() => setPage(p => Math.max(p - 1, 1))}
+          className="btn btn-primary"
+          onClick={() => setPage(page - 1)}
           disabled={page === 1}
         >
           Anterior
         </button>
         <button
-          className='btn btn-primary btn-sm mx-1'
-          onClick={() => setPage(p => p + 1)}
+          className="btn btn-primary"
+          onClick={() => setPage(page + 1)}
         >
           Siguiente
         </button>
-      </div>
-    </header>
-  );
-}
-
-Paginacion.propTypes = {
-  page: PropTypes.number.isRequired,
-  setPage: PropTypes.func.isRequired
-};
-
-function Personajes() {
-  const [characters, setCharacters] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          `https://rickandmortyapi.com/api/character/?page=${page}`
-        );
-        
-        if (!response.ok) throw new Error('Error al cargar personajes');
-        
-        const data = await response.json();
-        setCharacters(data.results);
-        setError(null);
-      } catch (err) {
-        setError(err.message);
-        setCharacters([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, [page]);
-
-  return (
-    <div className='bg-dark text-white'>
-      <h1 className='text-center display-1 py-4'>Personajes</h1>
-      
-      <div className='container bg-danger'>
-        <Paginacion page={page} setPage={setPage} />
-
-        {loading ? (
-          <div className="text-center text-white">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Cargando...</span>
-            </div>
-            <h1>Cargando...</h1>
-          </div>
-        ) : error ? (
-          <div className="alert alert-danger">{error}</div>
-        ) : (
-          <div className='row'>
-            {characters.map((character) => (
-              <div className='col-md-4' key={character.id}>
-                <Character character={character} />
-              </div>
-            ))}
-          </div>
-        )}
-
-        <Paginacion page={page} setPage={setPage} />
       </div>
     </div>
   );

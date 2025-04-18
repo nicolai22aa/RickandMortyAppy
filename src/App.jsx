@@ -1,30 +1,26 @@
-import { useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-
-
+import Menu from './componentes/Menu';
+import Inicio from './componentes/Inicio';
+import Personajes from './componentes/Personajes';
+import Locaciones from './componentes/Locaciones';
 import Episodio from './componentes/Episodio';
 import Favoritos from './componentes/Favoritos';
-import Locaciones from './componentes/Locaciones';
-import Menu from './componentes/Menu';
-import Original from './componentes/Original';
-import Personajes from './componentes/Personajes';
+import Crossovers from './componentes/Crossovers';
+import Detalles from './componentes/DetallePersonaje'; // Importamos el componente de detalles
 
 function App() {
   return (
     <Router>
-  
-     <Menu/>
-
+      <Menu />
       <Routes>
+        <Route path="/inicio" element={<Inicio />} />
+        <Route path="/personajes" element={<Personajes />} />
+        <Route path="/locaciones" element={<Locaciones />} />
         <Route path="/episodio" element={<Episodio />} />
         <Route path="/favoritos" element={<Favoritos />} />
-        <Route path="/Locaciones" element={<Locaciones />} />
-        <Route path='/Menu' element={<Menu/> }/>
-        <Route path="/original" element={<Original />} />
-        <Route path="/personajes" element={<Personajes />} />
-
-      
+        <Route path="/crossovers" element={<Crossovers />} />
+        <Route path="/detalles/:id" element={<Detalles />} /> {/* Nueva ruta de detalles */}
       </Routes>
     </Router>
   );
