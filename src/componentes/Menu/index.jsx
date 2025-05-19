@@ -10,6 +10,8 @@ function Menu() {
           <Link to="/Episodio">Episodio</Link>
           <Link to="/Favoritos">Favoritos</Link>
           <Link to="/Crossovers">Crossovers</Link>
+          <Link to="/Usuario">Usuario</Link>
+          <Link to="/Memoria">Memoria</Link>          
           
         </nav>
     )

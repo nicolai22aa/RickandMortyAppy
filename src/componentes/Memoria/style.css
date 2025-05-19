@@ -1,0 +1,176 @@
+/* src/components/Memoria.css */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.memoria-contenedor {
+  text-align: center;
+  color: white;
+  padding: 2rem;
+  background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+}
+
+.memoria-contenedor h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  color: #42b4ca;
+  text-shadow: 0 0 10px rgba(66, 180, 202, 0.5);
+  font-family: 'Press Start 2P', cursive;
+  letter-spacing: 1px;
+}
+
+.grid-cartas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  justify-items: center;
+}
+
+.carta {
+  width: 120px;
+  height: 150px;
+  cursor: pointer;
+  perspective: 1000px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.carta:hover {
+  transform: scale(1.05);
+}
+
+.carta-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.carta.volteada .carta-inner {
+  transform: rotateY(180deg);
+}
+
+.carta-front, .carta-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.carta-front {
+  background: linear-gradient(45deg, #97ce4c, #42b4ca);
+  color: white;
+  transform: rotateY(180deg);
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.carta-back {
+  background: url('https://rickandmortyapi.com/api/character/avatar/1.jpeg') center/cover;
+  border: 3px solid #42b4ca;
+}
+
+.carta img {
+  width: 100%;
+  height: 80%;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
+}
+
+.carta p {
+  margin: 5px 0 0;
+  font-size: 0.8rem;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+}
+
+.contador {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #f0e14a;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.boton-reiniciar {
+  background: #e4a788;
+  color: #1a1a1a;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  font-family: 'Press Start 2P', cursive;
+  letter-spacing: 1px;
+}
+
+.boton-reiniciar:hover {
+  background: #f0e14a;
+  transform: scale(1.05);
+}
+
+@keyframes foundAnimation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.carta.encontrada {
+  animation: foundAnimation 0.5s ease;
+}
+
+@media (max-width: 768px) {
+  .grid-cartas {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 500px;
+  }
+  
+  .carta {
+    width: 100px;
+    height: 130px;
+  }
+  
+  .memoria-contenedor h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-cartas {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 300px;
+    gap: 1rem;
+  }
+  
+  .carta {
+    width: 90px;
+    height: 120px;
+  }
+  
+  .memoria-contenedor h2 {
+    font-size: 1.4rem;
+  }
+  
+  .contador {
+    font-size: 1rem;
+  }
+}
